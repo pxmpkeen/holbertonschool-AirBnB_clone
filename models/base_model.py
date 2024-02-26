@@ -8,8 +8,7 @@ import models
 class BaseModel:
 """BaseModel class"""
 
-    def __init__(self, *args, **kwargs):
-    """Init"""
+    def __init__(self, id=None, created_at=None):
         if id is not None:
             self.id = id
         else:
@@ -17,3 +16,6 @@ class BaseModel:
         if created_at is not None:
             self.created_at = datetime.now()
         self.updated_at = self.created_at
+    def __str__(self):
+    def to_dict(self):
+    def save(self):
