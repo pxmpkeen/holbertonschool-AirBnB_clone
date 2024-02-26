@@ -11,6 +11,8 @@ class BaseModel:
         else:
             self.id = str(uuid.uuid4())
         if created_at is not None:
+            self.created_at = created_at
+        else:
             self.created_at = datetime.now()
         self.updated_at = datetime.now()
     def __str__(self):
