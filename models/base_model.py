@@ -10,5 +10,10 @@ class BaseModel:
 
     def __init__(self, *args, **kwargs):
     """Init"""
-        if kwargs:
-            for key, value in kwargs.items():
+        if id is not None:
+            self.id = id
+        else:
+            self.id = str(uuid.uuid4())
+        if created_at is not None:
+            self.created_at = datetime.now()
+        self.updated_at = self.created_at
