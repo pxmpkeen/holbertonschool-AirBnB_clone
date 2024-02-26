@@ -1,13 +1,10 @@
 #!/usr/bin/python3
-""" Base """
 import uuid
 from datetime import datetime
 import models
 
 
 class BaseModel:
-"""BaseModel class"""
-
     def __init__(self, id=None, created_at=None):
         if id is not None:
             self.id = id
