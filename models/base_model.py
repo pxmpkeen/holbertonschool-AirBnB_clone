@@ -5,7 +5,7 @@ import models
 
 
 class BaseModel:
-    def __init__(self, id=None, created_at=None):
+    def __init__(self, id=None, created_at=None, updated_at=None):
         if id is not None:
             self.id = id
         else:
@@ -14,7 +14,10 @@ class BaseModel:
             self.created_at = created_at
         else:
             self.created_at = datetime.now()
-        self.updated_at = datetime.now()
+        if updated_at is not None:
+            self.updated_at = updated_at
+        else:
+            self.updated_at = datetime.now()
     def __str__(self):
         return "[{}] ({}) {}".format(
             type(self).__name__, self.id, self.__dict__)
