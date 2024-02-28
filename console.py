@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+"""Interpretator"""
 import cmd
 
 
