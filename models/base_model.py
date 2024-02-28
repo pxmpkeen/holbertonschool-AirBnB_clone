@@ -5,7 +5,7 @@ import models
 
 
 class BaseModel:
-    def __init__(self, id=None, created_at=None, updated_at=None, **kwargs):
+    def __init__(self, *args, **kwargs):
         if id is not None:
             self.id = id
         else:
