@@ -1,6 +1,7 @@
 import json
 import os
 from models.base_model import BaseModel
+from models.user import User
 
 
 class FileStorage:
@@ -21,4 +22,9 @@ class FileStorage:
     def reload(self) -> None:
         if os.path.exists(self.__file_path):
             with open(self.__file_path, "r") as fd:
-                self.__objects = {k: BaseModel(**v) for k, v in json.load(fd).items()}
+                objects = json.load(fd)
+                for k, v in objs.items():
+                    if 'User' in k:
+                        self.__objects[k] = User(**v)
+                    else:
+                        self.__objects[k] = BaseModel(**v)
