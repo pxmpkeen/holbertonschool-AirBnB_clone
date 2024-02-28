@@ -35,3 +35,6 @@ class BaseModel:
         from models import storage
         self.updated_at = datetime.datetime.now()
         storage.save()
+
+    def class_name(self) -> str:
+        return self.__class__.__name__
