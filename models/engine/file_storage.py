@@ -23,7 +23,7 @@ class FileStorage:
         if os.path.exists(self.__file_path):
             with open(self.__file_path, "r") as fd:
                 objects = json.load(fd)
-                for k, v in objs.items():
+                for k, v in objects.items():
                     if 'User' in k:
                         self.__objects[k] = User(**v)
                     else:
