@@ -5,27 +5,34 @@ import models
 
 
 class BaseModel:
-    def __init__(self, *args, **kwargs):
-        if id is not None:
-            self.id = id
+    def __init__(self, *args, **kwargs) -> None:
+        from models import storage
+        if kwargs:
+            kwargs['created_at'] = datetime.datetime.fromisoformat(
+                kwargs['created_at']
+            )
+            kwargs['updated_at'] = datetime.datetime.fromisoformat(
+                kwargs['updated_at']
+            )
+            kwargs.pop('__class__')
+            self.__dict__ = kwargs
         else:
-            self.id = str(uuid.uuid4())
-        if created_at is not None:
-            self.created_at = created_at
-        else:
-            self.created_at = datetime.now()
-        if updated_at is not None:
-            self.updated_at = updated_at
-        else:
-            self.updated_at = datetime.now()
-    def __str__(self):
-        return "[{}] ({}) {}".format(
-            type(self).__name__, self.id, self.__dict__)
-    def to_dict(self):
+            self.id = str(uuid4())
+            self.created_at = datetime.datetime.now()
+            self.updated_at = datetime.datetime.now()
+        storage.new(self)
+
+    def __str__(self) -> str:
+        return "[{:s}] ({:s}) {}".format(
+                self.__class__.__name__, self.id, self.__dict__)
+
+    def to_dict(self) -> dict:
         obj_dict = self.__dict__.copy()
-        obj_dict['__class__'] = type(self).__name__
-        obj_dict['created_at'] = self.created_at.isoformat()
-        obj_dict['updated_at'] = self.updated_at.isoformat()
-        return obj_dict
-    def save(self):
-        self.updated_at = datetime.now()
+        obj_dict['created_at'] = str(self.created_at.isoformat())
+        obj_dict['updated_at'] = str(self.updated_at.isoformat())
+        return obj_dict | {'__class__': self.__class__.__name__}
+
+    def save(self) -> None:
+        from models import storage
+        self.updated_at = datetime.datetime.now()
+        storage.save()
