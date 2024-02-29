@@ -19,7 +19,7 @@ class BaseModel:
             self.id = str(uuid4())
             self.created_at = datetime.datetime.now()
             self.updated_at = datetime.datetime.now()
-        storage.new(self)
+            storage.new(self)
 
     def __str__(self) -> str:
         return "[{:s}] ({:s}) {}".format(
