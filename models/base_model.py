@@ -1,10 +1,16 @@
 #!/usr/bin/python3
+"""
+Implementation of Base Model for all classes
+"""
 from uuid import uuid4
 import datetime
 
 
 class BaseModel:
+    """Base model for all classes"""
+
     def __init__(self, *args, **kwargs) -> None:
+        """Creating an instance"""
         from models import storage
         if kwargs:
             kwargs['created_at'] = datetime.datetime.fromisoformat(
@@ -22,6 +28,7 @@ class BaseModel:
             storage.new(self)
 
     def __str__(self) -> str:
+        """Overriding string representation of class"""
         return "[{:s}] ({:s}) {}".format(
                 self.__class__.__name__, self.id, self.__dict__)
 

@@ -5,6 +5,7 @@ from models.base_model import BaseModel
 
 
 class TestBaseModel(unittest.TestCase):
+
     def setUp(self):
         self.base_model = BaseModel()
 
@@ -20,9 +21,15 @@ class TestBaseModel(unittest.TestCase):
         self.assertIn('id', obj_dict)
         self.assertEqual(obj_dict['id'], self.base_model.id)
         self.assertIn('created_at', obj_dict)
-        self.assertEqual(obj_dict['created_at'], self.base_model.created_at.isoformat())
+        self.assertEqual(
+                obj_dict['created_at'],
+                self.base_model.created_at.isoformat()
+                )
         self.assertIn('updated_at', obj_dict)
-        self.assertEqual(obj_dict['updated_at'], self.base_model.updated_at.isoformat())
+        self.assertEqual(
+                obj_dict['updated_at'],
+                self.base_model.updated_at.isoformat()
+                )
 
     def test_self_id(self):
         self.assertIsInstance(self.base_model.id, str)
@@ -31,7 +38,10 @@ class TestBaseModel(unittest.TestCase):
         self.assertIsInstance(self.base_model.created_at, datetime)
 
     def test_str(self):
-        expected_str = "[BaseModel] ({}) {}".format(self.base_model.id, self.base_model.__dict__)
+        expected_str = "[BaseModel] ({}) {}".format(
+                self.base_model.id,
+                self.base_model.__dict__
+                )
         self.assertEqual(str(self.base_model), expected_str)
 
 

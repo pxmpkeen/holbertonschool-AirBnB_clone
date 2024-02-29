@@ -5,21 +5,23 @@ from models.place import Place
 
 
 class TestBaseModel(unittest.TestCase):
+
     def test_initialization(self):
         obj = BaseModel()
         self.assertIsNotNone(obj.id)
         self.assertIsNotNone(obj.created_at)
         self.assertIsNotNone(obj.updated_at)
-        
+
     def test_to_dict(self):
         obj = BaseModel()
         obj_dict = obj.to_dict()
         self.assertIsInstance(obj_dict, dict)
         self.assertIn('__class__', obj_dict)
         self.assertEqual(obj_dict['__class__'], 'BaseModel')
-        
-        
+
+
 class TestPlace(unittest.TestCase):
+
     def test_initialization(self):
         place = Place()
         self.assertIsNotNone(place.id)

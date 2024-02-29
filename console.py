@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Interpretator"""
+"""Implementation of REPL"""
 import cmd
 from models.amenity import Amenity
 from models.city import City
@@ -17,10 +17,12 @@ classes = {
         "Place": Place,
         "Review": Review,
         "User": User,
-        "BaseModel": BaseModel 
+        "BaseModel": BaseModel
         }
 
+
 class HBNBCommand(cmd.Cmd):
+    """Class to implement REPL"""
     prompt = '(hbnb) '
 
     def do_quit(self, arg):
@@ -32,6 +34,7 @@ class HBNBCommand(cmd.Cmd):
         exit()
 
     def do_create(self, arg=""):
+        """Create an instance of written class"""
         args = arg.split()
         if len(args) == 0:
             print("** class name missing **")
@@ -42,6 +45,7 @@ class HBNBCommand(cmd.Cmd):
             storage.save()
 
     def do_show(self, arg=""):
+        """Show details of written instance"""
         args = arg.split()
         if len(args) == 0:
             print("** class name missing **")
@@ -59,6 +63,7 @@ class HBNBCommand(cmd.Cmd):
                 print("** no instance found **")
 
     def do_destroy(self, arg=""):
+        """Destroy written instance"""
         args = arg.split()
         if len(args) == 0:
             print("** class name missing **")
@@ -75,12 +80,14 @@ class HBNBCommand(cmd.Cmd):
                 storage.save()
 
     def do_all(self, arg):
+        """Print all instances"""
         if not arg or arg in classes:
             print([str(obj) for obj in storage.all().values()])
         else:
             print("** class doesn't exist **")
 
     def do_update(self, arg=""):
+        """Update given instance"""
         args = arg.split()
         if len(args) == 0:
             print("** class name missing **")

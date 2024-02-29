@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+"""FileStorage"""
 import json
 import os
 from models.base_model import BaseModel
@@ -5,6 +7,7 @@ from models.user import User
 
 
 class FileStorage:
+    """Class FileStorage"""
     __file_path: str = "file.json"
     __objects: dict[str, object] = {}
 
