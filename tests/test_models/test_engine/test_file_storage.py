@@ -41,5 +41,5 @@ class TestFileStorage(unittest.TestCase):
         self.storage.new(self.base_model)
         self.storage.save()
         with open(self.storage._FileStorage__file_path, 'r') as f:
-        data = json.load(f)
-        self.assertIn(f'{self.base_model.__class__.__name__}.{self.base_model.id}', data)
+            data = json.load(f)
+            self.assertIn(f'{self.base_model.__class__.__name__}.{self.base_model.id}', data)
