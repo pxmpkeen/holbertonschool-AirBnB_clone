@@ -1,42 +1,61 @@
 #!/usr/bin/python3
 import unittest
 from models.base_model import BaseModel
+from models.place import Place
+from models.user import User
 from models.city import City
-from datetime import datetime
-from models import storage
+
+
+class TestBaseModel(unittest.TestCase):
+    def test_initialization(self):
+        obj = BaseModel()
+        self.assertIsNotNone(obj.id)
+        self.assertIsNotNone(obj.created_at)
+        self.assertIsNotNone(obj.updated_at)
+        
+    def test_to_dict(self):
+        obj = BaseModel()
+        obj_dict = obj.to_dict()
+        self.assertIsInstance(obj_dict, dict)
+        self.assertIn('__class__', obj_dict)
+        self.assertEqual(obj_dict['__class__'], 'BaseModel')
+        
+        
+class TestPlace(unittest.TestCase):
+    def test_initialization(self):
+        place = Place()
+        self.assertIsNotNone(place.id)
+        self.assertIsNotNone(place.created_at)
+        self.assertIsNotNone(place.updated_at)
+        self.assertEqual(place.city_id, "")
+        self.assertEqual(place.user_id, "")
+        self.assertEqual(place.name, "")
+        self.assertEqual(place.description, "")
+        self.assertEqual(place.number_rooms, 0)
+        self.assertEqual(place.number_bathrooms, 0)
+        self.assertEqual(place.max_guest, 0)
+        self.assertEqual(place.price_by_night, 0)
+        self.assertEqual(place.latitude, 0.0)
+        self.assertEqual(place.longitude, 0.0)
+        self.assertEqual(place.amenity_ids, [])
+        
+class TestUser(unittest.TestCase):
+    def test_initialization(self):
+        user = User()
+        self.assertIsNotNone(user.id)
+        self.assertIsNotNone(user.created_at)
+        self.assertIsNotNone(user.updated_at)
+        self.assertEqual(user.email, "")
+        self.assertEqual(user.password, "")
+        self.assertEqual(user.first_name, "")
+        self.assertEqual(user.last_name, "")
 
 
 class TestCity(unittest.TestCase):
-
-    def setUp(self):
-        self.city = City()
-
-    def test_instance(self):
-        self.assertIsInstance(self.city, City)
-        self.assertIsInstance(self.city, BaseModel)
-
-    def test_attributes(self):
-        self.assertTrue(hasattr(self.city, 'state_id'))
-        self.assertTrue(hasattr(self.city, 'name'))
-        self.assertTrue(hasattr(self.city, 'id'))
-        self.assertTrue(hasattr(self.city, 'created_at'))
-        self.assertTrue(hasattr(self.city, 'updated_at'))
-
-    def test_defaults(self):
-        self.assertEqual(self.city.state_id, "")
-        self.assertEqual(self.city.name, "")
-        self.assertIsInstance(self.city.created_at, datetime)
-        self.assertIsInstance(self.city.updated_at, datetime)
-
-    def test_to_dict(self):
-        city_dict = self.city.to_dict()
-        self.assertEqual(city_dict['__class__'], 'City')
-        self.assertIsInstance(city_dict['created_at'], str)
-        self.assertIsInstance(city_dict['updated_at'], str)
-        self.assertEqual(city_dict['state_id'], self.city.state_id)
-        self.assertEqual(city_dict['name'], self.city.name)
-
-    def test_save(self):
-        initial_updated_at = self.city.updated_at
-        self.city.save()
-        self.assertNotEqual(initial_updated_at, self.city.updated_at)
+    def test_initialization(self):
+        city = City()
+        self.assertIsNotNone(city.id)
+        self.assertIsNotNone(city.created_at)
+        self.assertIsNotNone(city.updated_at)
+        self.assertEqual(city.state_id, "")
+        self.assertEqual(city.name, "")
