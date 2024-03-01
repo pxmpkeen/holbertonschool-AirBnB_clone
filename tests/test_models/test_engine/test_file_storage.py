@@ -3,7 +3,7 @@ import unittest
 import os
 from models.base_model import BaseModel
 from models.user import User
-from models.file_storage import FileStorage
+from models.engine.file_storage import FileStorage
 
 
 class TestFileStorage(unittest.TestCase):
