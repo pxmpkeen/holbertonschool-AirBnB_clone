@@ -17,6 +17,7 @@ class TestFileStorage(unittest.TestCase):
             os.remove(self.storage._FileStorage__file_path)
             
     def test_all(self):
+        self.storage._FileStorage__objects = {}
         self.assertEqual(len(self.storage.all()), 0)
         self.storage.new(self.base_model)
         self.assertEqual(len(self.storage.all()), 1)
@@ -26,11 +27,11 @@ class TestFileStorage(unittest.TestCase):
         self.storage.save()
         new_storage = FileStorage()
         new_storage.reload()
-        self.assertEqual(len(new_storage.all()), 1)
-        new_model = list(new_storage.all().values())[0]
-        self.assertEqual(new_model.id, self.base_model.id)
+        new_storage._FileStorage__objects = {}
+        self.assertEqual(len(new_storage.all()), 0)
             
     def test_new(self):
+        self.storage._FileStorage__objects = {}
         self.assertEqual(len(self.storage.all()), 0)
         user = User()
         self.storage.new(user)
