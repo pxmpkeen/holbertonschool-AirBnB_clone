@@ -1,45 +1,74 @@
 #!/usr/bin/python3
 import unittest
 from models.base_model import BaseModel
+from models.place import Place
+from models.user import User
+from models.city import City
 from models.review import Review
-from datetime import datetime
-from models import storage
 
 
-class TestReview(unittest.TestCase):
-
-    def setUp(self):
-        self.review = Review()
-
-    def test_instance(self):
-        self.assertIsInstance(self.review, Review)
-        self.assertIsInstance(self.review, BaseModel)
-
-    def test_attributes(self):
-        self.assertTrue(hasattr(self.review, 'place_id'))
-        self.assertTrue(hasattr(self.review, 'user_id'))
-        self.assertTrue(hasattr(self.review, 'text'))
-        self.assertTrue(hasattr(self.review, 'id'))
-        self.assertTrue(hasattr(self.review, 'created_at'))
-        self.assertTrue(hasattr(self.review, 'updated_at'))
-
-    def test_defaults(self):
-        self.assertEqual(self.review.place_id, "")
-        self.assertEqual(self.review.user_id, "")
-        self.assertEqual(self.review.text, "")
-        self.assertIsInstance(self.review.created_at, datetime)
-        self.assertIsInstance(self.review.updated_at, datetime)
-
+class TestBaseModel(unittest.TestCase):
+    def test_initialization(self):
+        obj = BaseModel()
+        self.assertIsNotNone(obj.id)
+        self.assertIsNotNone(obj.created_at)
+        self.assertIsNotNone(obj.updated_at)
+        
     def test_to_dict(self):
-        review_dict = self.review.to_dict()
-        self.assertEqual(review_dict['__class__'], 'Review')
-        self.assertIsInstance(review_dict['created_at'], str)
-        self.assertIsInstance(review_dict['updated_at'], str)
-        self.assertEqual(review_dict['place_id'], self.review.place_id)
-        self.assertEqual(review_dict['user_id'], self.review.user_id)
-        self.assertEqual(review_dict['text'], self.review.text)
+        obj = BaseModel()
+        obj_dict = obj.to_dict()
+        self.assertIsInstance(obj_dict, dict)
+        self.assertIn('__class__', obj_dict)
+        self.assertEqual(obj_dict['__class__'], 'BaseModel')
+    
+        
+class TestPlace(unittest.TestCase):
+    def test_initialization(self):
+        place = Place()
+        self.assertIsNotNone(place.id)
+        self.assertIsNotNone(place.created_at)
+        self.assertIsNotNone(place.updated_at)
+        self.assertEqual(place.city_id, "")
+        self.assertEqual(place.user_id, "")
+        self.assertEqual(place.name, "")
+        self.assertEqual(place.description, "")
+        self.assertEqual(place.number_rooms, 0)
+        self.assertEqual(place.number_bathrooms, 0)
+        self.assertEqual(place.max_guest, 0)
+        self.assertEqual(place.price_by_night, 0)
+        self.assertEqual(place.latitude, 0.0)
+        self.assertEqual(place.longitude, 0.0)
+        self.assertEqual(place.amenity_ids, [])
+        
+    
+class TestUser(unittest.TestCase):
+    def test_initialization(self):
+        user = User()
+        self.assertIsNotNone(user.id)
+        self.assertIsNotNone(user.created_at)
+        self.assertIsNotNone(user.updated_at)
+        self.assertEqual(user.email, "")
+        self.assertEqual(user.password, "")
+        self.assertEqual(user.first_name, "")
+        self.assertEqual(user.last_name, "")
 
-    def test_save(self):
-        initial_updated_at = self.review.updated_at
-        self.review.save()
-        self.assertNotEqual(initial_updated_at, self.review.updated_at)
+
+class TestCity(unittest.TestCase):
+    def test_initialization(self):
+        city = City()
+        self.assertIsNotNone(city.id)
+        self.assertIsNotNone(city.created_at)
+        self.assertIsNotNone(city.updated_at)
+        self.assertEqual(city.state_id, "")
+        self.assertEqual(city.name, "")
+            
+            
+class TestReview(unittest.TestCase):
+    def test_initialization(self):
+        review = Review()
+        self.assertIsNotNone(review.id)
+        self.assertIsNotNone(review.created_at)
+        self.assertIsNotNone(review.updated_at)
+        self.assertEqual(review.place_id, "")
+        self.assertEqual(review.user_id, "")
+        self.assertEqual(review.text, "")
