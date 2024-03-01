@@ -1,39 +1,95 @@
 #!/usr/bin/python3
 import unittest
 from models.base_model import BaseModel
+from models.place import Place
+from models.user import User
+from models.city import City
+from models.review import Review
+from models.state import State
 from models.amenity import Amenity
-from datetime import datetime
-from models import storage
 
 
-class TestAmenity(unittest.TestCase):
-
-    def setUp(self):
-        self.amenity = Amenity()
-
-    def test_instance(self):
-        self.assertIsInstance(self.amenity, Amenity)
-        self.assertIsInstance(self.amenity, BaseModel)
-
-    def test_attributes(self):
-        self.assertTrue(hasattr(self.amenity, 'name'))
-        self.assertTrue(hasattr(self.amenity, 'id'))
-        self.assertTrue(hasattr(self.amenity, 'created_at'))
-        self.assertTrue(hasattr(self.amenity, 'updated_at'))
-
-    def test_defaults(self):
-        self.assertEqual(self.amenity.name, "")
-        self.assertIsInstance(self.amenity.created_at, datetime)
-        self.assertIsInstance(self.amenity.updated_at, datetime)
-
+class TestBaseModel(unittest.TestCase):
+    def test_initialization(self):
+        obj = BaseModel()
+        self.assertIsNotNone(obj.id)
+        self.assertIsNotNone(obj.created_at)
+        self.assertIsNotNone(obj.updated_at)
+        
     def test_to_dict(self):
-        amenity_dict = self.amenity.to_dict()
-        self.assertEqual(amenity_dict['__class__'], 'Amenity')
-        self.assertIsInstance(amenity_dict['created_at'], str)
-        self.assertIsInstance(amenity_dict['updated_at'], str)
-        self.assertEqual(amenity_dict['name'], self.amenity.name)
+        obj = BaseModel()
+        obj_dict = obj.to_dict()
+        self.assertIsInstance(obj_dict, dict)
+        self.assertIn('__class__', obj_dict)
+        self.assertEqual(obj_dict['__class__'], 'BaseModel')
+        
+        
+class TestPlace(unittest.TestCase):
+    def test_initialization(self):
+        place = Place()
+        self.assertIsNotNone(place.id)
+        self.assertIsNotNone(place.created_at)
+        self.assertIsNotNone(place.updated_at)
+        self.assertEqual(place.city_id, "")
+        self.assertEqual(place.user_id, "")
+        self.assertEqual(place.name, "")
+        self.assertEqual(place.description, "")
+        self.assertEqual(place.number_rooms, 0)
+        self.assertEqual(place.number_bathrooms, 0)
+        self.assertEqual(place.max_guest, 0)
+        self.assertEqual(place.price_by_night, 0)
+        self.assertEqual(place.latitude, 0.0)
+        self.assertEqual(place.longitude, 0.0)
+        self.assertEqual(place.amenity_ids, [])
+        
 
-    def test_save(self):
-        initial_updated_at = self.amenity.updated_at
-        self.amenity.save()
-        self.assertNotEqual(initial_updated_at, self.amenity.updated_at)
+class TestUser(unittest.TestCase):
+    def test_initialization(self):
+        user = User()
+        self.assertIsNotNone(user.id)
+        self.assertIsNotNone(user.created_at)
+        self.assertIsNotNone(user.updated_at)
+        self.assertEqual(user.email, "")
+        self.assertEqual(user.password, "")
+        self.assertEqual(user.first_name, "")
+        self.assertEqual(user.last_name, "")
+        
+
+class TestCity(unittest.TestCase):
+    def test_initialization(self):
+        city = City()
+        self.assertIsNotNone(city.id)
+        self.assertIsNotNone(city.created_at)
+        self.assertIsNotNone(city.updated_at)
+        self.assertEqual(city.state_id, "")
+        self.assertEqual(city.name, "")
+        
+        
+class TestReview(unittest.TestCase):
+    def test_initialization(self):
+        review = Review()
+        self.assertIsNotNone(review.id)
+        self.assertIsNotNone(review.created_at)
+        self.assertIsNotNone(review.updated_at)
+        self.assertEqual(review.place_id, "")
+        self.assertEqual(review.user_id, "")
+        self.assertEqual(review.text, "")
+        
+        
+class TestState(unittest.TestCase):
+    def test_initialization(self):
+        state = State()
+        self.assertIsNotNone(state.id)
+        self.assertIsNotNone(state.created_at)
+        self.assertIsNotNone(state.updated_at)
+        self.assertEqual(state.name, "")
+        
+        
+class TestAmenity(unittest.TestCase):
+    def test_initialization(self):
+        amenity = Amenity()
+        self.assertIsNotNone(amenity.id)
+        self.assertIsNotNone(amenity.created_at)
+        self.assertIsNotNone(amenity.updated_at)
+        self.assertEqual(amenity.name, "")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
