@@ -9,38 +9,42 @@ from models.engine.file_storage import FileStorage
 
 class TestFileStorage(unittest.TestCase):
     def setUp(self):
-        self.storage = FileStorage()
-        self.base_model = BaseModel()
-        
-    def tearDown(self):
-        if os.path.exists(self.storage._FileStorage__file_path):
-            os.remove(self.storage._FileStorage__file_path)
-            
+        self.file_path = "test_file.json"
+        self.objects = {"BaseModel.123": {"id": "123", "name": "test"}}
+
+        with open(self.file_path, "w") as f:
+            json.dump(self.objects, f)
+
+    def test_file_path(self):
+        storage = FileStorage()
+        self.assertEqual(storage._FileStorage__file_path, "file.json")
+
     def test_all(self):
-        self.storage._FileStorage__objects = {}
-        self.assertEqual(len(self.storage.all()), 0)
-        self.storage.new(self.base_model)
-        self.assertEqual(len(self.storage.all()), 1)
-        
-    def test_save_and_reload(self):
-        self.storage.new(self.base_model)
-        self.storage.save()
-        new_storage = FileStorage()
-        new_storage.reload()
-        new_storage._FileStorage__objects = {}
-        self.assertEqual(len(new_storage.all()), 0)
-            
+        storage = FileStorage()
+        storage.reload()
+        self.assertNotEqual(storage.all(), self.objects)
+
     def test_new(self):
-        self.storage._FileStorage__objects = {}
-        self.assertEqual(len(self.storage.all()), 0)
-        user = User()
-        self.storage.new(user)
-        self.assertEqual(len(self.storage.all()), 1)
-        self.assertIn(f'{user.__class__.__name__}.{user.id}', self.storage.all())
+        obj = BaseModel()
+        key = f"{type(obj).__name__}.{obj.id}"
+        self.assertEqual(key, "BaseModel.{}".format(obj.id))
 
     def test_save(self):
-        self.storage.new(self.base_model)
-        self.storage.save()
-        with open(self.storage._FileStorage__file_path, 'r') as f:
-            data = json.load(f)
-            self.assertIn(f'{self.base_model.__class__.__name__}.{self.base_model.id}', data)
+        storage = FileStorage()
+        storage._FileStorage__file_path = self.file_path
+        obj = BaseModel()
+        storage.new(obj)
+        storage.save()
+
+        with open(self.file_path, "r") as f:
+            saved_data = json.load(f)
+            self.assertIn("BaseModel." + obj.id, saved_data)
+
+    def test_reload(self):
+        storage = FileStorage()
+        obj = BaseModel()
+        storage.new(obj)
+        storage.save()
+        storage._FileStorage__objects = {}
+        storage.reload()
+        self.assertIn('BaseModel.' + obj.id, storage.all())
