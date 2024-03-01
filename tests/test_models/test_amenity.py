@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import unittest
+from models.base_model import BaseModel
 from models.amenity import Amenity
 from datetime import datetime
 from models import storage
